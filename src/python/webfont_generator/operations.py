@@ -78,6 +78,8 @@ def _convert_with_fontforge(input_path, output_paths):
         p = subprocess.Popen(['fontforge', '-lang=ff', '-script', '-'],
             stdin=subprocess.PIPE, stdout=fout, stderr=subprocess.PIPE)
         p.stdin.write(('Open("%s", 1)\n' % _ff_escape(input_path)).encode('utf-8'))
+        p.stdin.write(('CIDFlatten();').encode('utf-8'))
+        p.stdin.write(('Reencode("unicode");').encode('utf-8'))
         for output_path in output_paths:
             p.stdin.write(('Generate("%s")\n' % _ff_escape(output_path)).encode('utf-8'))
         p.stdin.close()
